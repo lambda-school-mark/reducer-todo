@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useReducer } from "react";
+import { initialState, reducer } from "./reducers/todoReducer";
+import "./App.css";
 
 function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleChanges = (e) => {
+    setInputValue(e.target.value);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input value={inputValue} onChange={handleChanges} />
+      <button
+        onClick={() => dispatch({ type: "ADD_TODO", payload: inputValue })}
+      >
+        Add Todo
+      </button>
+      <div>
+        {state.map((item) => (
+          <p>{item.item}</p>
+        ))}
+      </div>
     </div>
   );
 }
