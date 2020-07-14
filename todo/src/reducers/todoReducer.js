@@ -2,10 +2,10 @@ export const initialState = [
   {
     item: "Learn about reducers",
     completed: false,
-    id: "",
+    id: Date.now(),
   },
 ];
-export const reducer = (state = [], action) => {
+export const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TODO":
       return [
@@ -13,9 +13,17 @@ export const reducer = (state = [], action) => {
         {
           item: action.payload,
           completed: false,
-          id: Math.random(),
+          id: Date.now(),
         },
       ];
+    case "TOGGLE_TODO":
+      return state.map((todo) =>
+        todo.id === action.payload.id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      );
+    case "FILTER_TODOS":
+      return state.filter((todo) => !todo.completed);
     default:
       return state;
   }
